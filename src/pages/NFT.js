@@ -198,17 +198,16 @@ function NFT() {
   const [contract, setContract] = useState(null);
   const [signer, setSigner] = useState(null);
 
-  const contractAddress = "0x726ff71b94FEAC008A82610fFCFc22470cf3BC75"
+  const contractAddress = "0x2f85416eB19C30361a63632E874886E8a5C4DA95"
 
   const updateContract = () => {
     try{
       let tempProvider = new ethers.providers.JsonRpcProvider(url)
-    console.log(tempProvider)
-    let tempSigner = tempProvider.getSigner(accountData.address)
-    console.log(tempSigner)
-    let tempContract = new ethers.Contract(contractAddress, abi , tempSigner)
-    setContract(tempContract)
-    console.log(tempContract)
+      let tempSigner = tempProvider.getSigner(accountData.address)
+      setSigner(tempSigner)
+      let tempContract = new ethers.Contract(contractAddress, abi , tempSigner)
+      setContract(tempContract)
+      console.log(tempContract)
     }
     catch(err){
       setButtonText("Connected With Error")
@@ -242,7 +241,8 @@ function NFT() {
   }
   async function getName(e){
     e.preventDefault()
-      console.log('Name: ' + await contract.name())
+    console.log(contract)
+      alert('Name: ' + await contract.name())
   }
   async function getOwnerOf(e){
     e.preventDefault()
