@@ -208,6 +208,7 @@ function NFT() {
     console.log(tempSigner)
     let tempContract = new ethers.Contract(contractAddress, abi , tempSigner)
     setContract(tempContract)
+    console.log(tempContract)
     }
     catch(err){
       setButtonText("Connected With Error")
