@@ -12,8 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
-import abi from '../contracts/abi.json'
-import { isBytes, parseBytes32String } from 'ethers/lib/utils';
+import abi from '../contracts/NFTabi.json'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -33,7 +32,7 @@ const mumbaiChainParameter = {
   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
 }
 
-const url = "https://polygon-mumbai.g.alchemy.com/v2/JLbyrp1PlTh67AJSqftRNJGQ4_dRnjSj";
+const url = "https://polygon-mumbai.g.alchemy.com/v2/8lsMkVFvQr7UoBJT30QWCQpt9VNodpF3";
 
 
 function NFT() {
@@ -199,20 +198,20 @@ function NFT() {
   const [contract, setContract] = useState(null);
   const [signer, setSigner] = useState(null);
 
-  const contractAddress = "0x2f85416eB19C30361a63632E874886E8a5C4DA95"
+  const contractAddress = "0x726ff71b94FEAC008A82610fFCFc22470cf3BC75"
 
   const updateContract = () => {
-    try {
-      let provider = new ethers.providers.JsonRpcProvider(url);
-      let tempSigner = provider.getSigner(accountData.address);
-      setSigner(tempSigner)
-      let tempContract = new ethers.Contract(contractAddress, abi, tempSigner)
-      setContract(tempContract)
+    try{
+      let tempProvider = new ethers.providers.JsonRpcProvider(url)
+    console.log(tempProvider)
+    let tempSigner = tempProvider.getSigner(accountData.address)
+    console.log(tempSigner)
+    let tempContract = new ethers.Contract(contractAddress, abi , tempSigner)
+    setContract(tempContract)
     }
-    catch (err) {
-      alert('Connection error, please reload the page and try again')
+    catch(err){
+      setButtonText("Connected With Error")
     }
-    
   }
 
   async function Balance(e){
@@ -225,6 +224,7 @@ function NFT() {
       alert('The balance Is: ' + balanceParsed)
     }
     catch (err) {
+      console.log(err)
       alert('Error: ' + err.message)
     }
   }
@@ -241,12 +241,7 @@ function NFT() {
   }
   async function getName(e){
     e.preventDefault()
-    try{
-      alert('Name: ' + await contract.name())
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
+      console.log('Name: ' + await contract.name())
   }
   async function getOwnerOf(e){
     e.preventDefault()
@@ -387,7 +382,7 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='approveTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprove}> Approve </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprove}> Call </Button>
           </div>
         </div>
         <div>
@@ -397,7 +392,7 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='initializeSymbol' label="symbol_" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getInitialize} > Initialize </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getInitialize} > Call </Button>
           </div>
         </div>
         <div>
@@ -407,13 +402,13 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='mintTokenId' label="_tokenId" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getMint}> Mint </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getMint}> Call </Button>
           </div>
         </div>
         <div>
           <h3>Renounce Ownership</h3>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getRenounce} > Renounce </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getRenounce} > Call </Button>
           </div>
         </div>
         <div>
@@ -425,7 +420,7 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='stfData' label="_data" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getStfFrom}> Safe Transfer From </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getStfFrom}> Call </Button>
           </div>
         </div>
         <div>
@@ -434,7 +429,7 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='sbmuri' label="_newBaseMetadataURI" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSbmuri}> Set Base Metadata URI </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSbmuri}> Call </Button>
           </div>
         </div>
         <div>
@@ -445,7 +440,7 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='transferFromTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSafeTransfer} > Safe Transfer From </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSafeTransfer} > Call </Button>
           </div>
         </div> 
         <div>
@@ -454,7 +449,7 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '100%'}} id='transferownership' label="To"></TextField>
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTransferownership}>Transfer Ownership</Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTransferownership}> Call </Button>
           </div>
         </div> 
     </TabPanel>
@@ -465,7 +460,7 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='balanceAddress' label="address" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Balance}> Get Balance </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Balance}> Call </Button>
       </div>
     </div>
     <div>
@@ -474,13 +469,13 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='getApprovedId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApproved}> Get Approved </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApproved}> Call </Button>
       </div>
     </div>
     <div>
       <h3>Name</h3>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getName}> Get Name </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getName}> Call </Button>
       </div>
     </div>
     <div>
@@ -489,7 +484,7 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='ownerOfTokenId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwnerOf}> Get Owner Of </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwnerOf}> Call </Button>
       </div>
     </div>
   <div>
@@ -498,13 +493,13 @@ function NFT() {
     <TextField id="outlined-basic" sx={{width: '100%'}} id='supportsInterfaceId' label="tokenId" variant="outlined" />
     </div>
     <div>
-      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSupportsInterface}> Get Supports Interface</Button>
+      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSupportsInterface}> Call </Button>
     </div>
   </div>
   <div>
     <h3>Symbol</h3>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSymbol}> Get Symbol </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSymbol}> Call </Button>
     </div>
   </div>
   <div>
@@ -513,7 +508,7 @@ function NFT() {
     <TextField id="outlined-basic" sx={{width: '100%'}} id='tokenUriId' label="_id" variant="outlined" />
     </div>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTokenURI}> TokenURI </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTokenURI}> Call </Button>
     </div>
   </div>
     </TabPanel>
