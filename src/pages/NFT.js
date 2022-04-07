@@ -14,6 +14,10 @@ import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
 import nft_abi from '../contracts/nft_abi.json'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -313,10 +317,10 @@ function NFT() {
     }
   }
   async function getSaf(e){
+    e.preventDefault()
     try{
       const safOperator = document.getElementById('safOperator').value;
-      const safApproved = document.getElementById('safApproved').value;
-      const saf = await contract.setApprovalForAll(safOperator, safApproved)
+      const saf = await contract.setApprovalForAll(safOperator, select)
       alert('Safe Approval For All: ' + saf)
     }
     catch(err){
@@ -324,6 +328,7 @@ function NFT() {
     }
   }
   async function getSbmuri(e){
+    e.preventDefault()
       try{
         const sbmuriData = document.getElementById('sbmuri').value;
         const sbmuri = await contract.setBaseMetadataURI(sbmuriData)
@@ -382,6 +387,12 @@ function NFT() {
     updateContract()
   }
 
+  const [select, setSelect] = useState('');
+
+  const handle = (event) => {
+    setSelect(event.target.value);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -432,7 +443,13 @@ function NFT() {
           <h3>Set Approval For All</h3>
           <div>
             <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="to" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='safApproved' label="tokenId" variant="outlined" />
+            <FormControl sx={{width: '50%'}}>
+              <InputLabel id="demo-simple-select-label">Approve</InputLabel>
+                <Select label="Age" onChange={handle}>
+                  <MenuItem value={true}>True</MenuItem>
+                  <MenuItem value={false}>False</MenuItem>
+                </Select>
+            </FormControl>
           </div>
           <div>
             <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSaf}> Call </Button>

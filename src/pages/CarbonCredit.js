@@ -14,6 +14,10 @@ import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
 import carbon_abi from '../contracts/carbon_abi.json'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -230,20 +234,6 @@ const CarbonCredit = () => {
       console.log(err)
     }
   }
-  async function getBalanceB(e) {
-    e.preventDefault()
-    try{
-      const balanceBAddress = document.getElementById('balanceBaccount').value;
-      console.log(balanceBAddress)
-      const balanceBId = parseInt(document.getElementById('balanceBids').value);
-      console.log(balanceBId)
-      const balance = await contract.balanceOfBatch(balanceBAddress, balanceBId)
-      alert("Balance Of Batch: " + balance)
-    }
-    catch(err){
-      console.log(err)
-    }
-  }
   async function getApproved(e){
     e.preventDefault()
     try{
@@ -270,7 +260,7 @@ const CarbonCredit = () => {
     try{
       const burnAccount = document.getElementById('burnAccount').value;;
       const burnId = parseInt(document.getElementById('burnId').value);
-      const burnAmount = parseInt(document.getElementById('burnAmount'));
+      const burnAmount = parseInt(document.getElementById('burnAmount').value);
       const burn = await contract.burn(burnAccount, burnId, burnAmount)
       alert("Burn: " + burn)
     }
@@ -295,16 +285,22 @@ const CarbonCredit = () => {
   }
   async function getSaf(e){
     e.preventDefault()
-    try{
-      const safOperator = document.getElementById('safOperator').value
-    const safApproved = document.getElementById('safApproved').value
-    const saf = await contract.setApprovalForAll(safOperator, safApproved)
-    alert("Safe Approval for All: " + saf)
-    }
-    catch(err){
-      console.log(err)
-    }
+      try{
+        const safOperator = document.getElementById('safOperator').value
+        const saf = await contract.setApprovalForAll(safOperator, select)
+        alert("Safe Approval for All: " + saf)
+      }
+      catch(err){
+        console.log(err)
+        }
   }
+
+  const [select, setSelect] = useState('');
+
+  const handle = (event) => {
+    setSelect(event.target.value);
+  };
+
 
     return (
       <div>
@@ -374,7 +370,14 @@ const CarbonCredit = () => {
         <h3>Set Approval For All</h3>
         <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="operator" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='safApproved' label="approved" variant="outlined" />
+          <FormControl sx={{width: '50%'}}>
+          <InputLabel id="demo-simple-select-label">Approve</InputLabel>
+        <Select label="Age" onChange={handle}>
+          <MenuItem value={true}>True</MenuItem>
+          <MenuItem value={false}>False</MenuItem>
+        </Select>
+      </FormControl>
+   
         </div>
           <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSaf}> Call </Button>
       </TabPanel>

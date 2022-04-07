@@ -254,6 +254,19 @@ const Solid = () => {
           console.log(err)
       }
   }
+  async function getCarbonCredits(e){
+    e.preventDefault()
+    try{
+      const createAddress = document.getElementById('createAddress').value;
+      const createAmount = parseInt(document.getElementById('createAmount').value);
+      const createData = parseInt(document.getElementById('createData').value);
+      const create = await contract.create(createAddress, createAmount, createData)
+      alert('Carbon Credits Create: ' + create)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   return (
     <div>
@@ -309,6 +322,17 @@ const Solid = () => {
            <div>
                <Button variant="contained" sx={{width: '100%', mt: 2}}> Call </Button>
            </div>
+      </div>
+      <div>
+        <h3>Create Carbon Credit</h3>
+        <div>
+           <TextField id="outlined-basic" sx={{width: '50%'}} id='createAddress' label="Buyer Address" variant="outlined" />
+           <TextField id="outlined-basic" sx={{width: '50%'}} id='createAmount' label="Amount" variant="outlined" />
+           <TextField id="outlined-basic" sx={{width: '100%'}} id='createData' label="Data" variant="outlined" />
+        </div>
+        <div>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getCarbonCredits}> Call </Button>
+        </div>
       </div>
       <div>
           <h3>Mint Carbon Credit</h3>
