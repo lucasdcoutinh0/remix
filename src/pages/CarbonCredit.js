@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
+import carbon_abi from '../contracts/carbon_abi.json'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -191,8 +192,117 @@ const CarbonCredit = () => {
 
   // Tabs End //
 
+
+  const contractAddress = '0x44D457992627355c407e185Dd5533E1581aA8E5A'
+
+  const [signer, setSigner] = useState(null)
+  const [contract, setContract] = useState(null)
+
+  const updateContract = async () => {
+    try{
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      await provider.send("eth_requestAccounts", [])
+      const tempSigner = provider.getSigner()
+      setSigner(tempSigner)
+      const tempContract = new ethers.Contract(contractAddress, carbon_abi, tempSigner)
+      setContract(tempContract)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
   const connectWallet = () => {
     handleWalletConnection()
+    updateContract()
+  }
+
+  async function getBalance(e) {
+    e.preventDefault()
+    try{
+      const balanceAddress = document.getElementById('balanceAddress').value;
+      const balanceId = parseInt(document.getElementById('balanceId').value);
+      const balance = await contract.balanceOf(balanceAddress, balanceId)
+      alert("Balance: " + balance)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getBalanceB(e) {
+    e.preventDefault()
+    try{
+      const balanceBAddress = document.getElementById('balanceBaccount').value;
+      console.log(balanceBAddress)
+      const balanceBId = parseInt(document.getElementById('balanceBids').value);
+      console.log(balanceBId)
+      const balance = await contract.balanceOfBatch(balanceBAddress, balanceBId)
+      alert("Balance Of Batch: " + balance)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getApproved(e){
+    e.preventDefault()
+    try{
+      const approvedAccount = document.getElementById('approvedAccount').value;
+      const approvedOperator = document.getElementById('approvedOperator').value;
+      const approved = await contract.isApprovedForAll(approvedAccount, approvedOperator)
+      alert("Is Approved For All: " + approved)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getOwner(e){
+    e.preventDefault()
+    try{
+      alert("Owner: " + await contract.owner())
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getBurn(e){
+    e.preventDefault()
+    try{
+      const burnAccount = document.getElementById('burnAccount').value;;
+      const burnId = parseInt(document.getElementById('burnId').value);
+      const burnAmount = parseInt(document.getElementById('burnAmount'));
+      const burn = await contract.burn(burnAccount, burnId, burnAmount)
+      alert("Burn: " + burn)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getStf(e){
+    e.preventDefault()
+    try{
+      const stfFrom = document.getElementById('StfFrom').value
+      const stfTo = document.getElementById('StfTo').value
+      const stfId = parseInt(document.getElementById('stfIds')).value
+      const stfAmount = parseInt(document.getElementById('stfAmounts')).value
+      const stfData = document.getElementById('stfData').value
+      const stf = await contract.safeTransferFrom(stfFrom, stfTo, stfId, stfAmount, stfData)
+      alert("Safe transfer from: " + stf)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function saf(e){
+    e.preventDefault()
+    try{
+      const safOperator = document.getElementById('safOperator').value
+    const safApproved = document.getElementById('safApproved').value
+    const saf = await contract.setApprovalForAll(safOperator, safApproved)
+    alert("Safe Approval for All: " + saf)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
     return (
@@ -220,35 +330,18 @@ const CarbonCredit = () => {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='balanceId' label="uint256" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getBalance} > Call </Button>
           </div>
-        </div>
-        <div>
-          <h3>Balance of Batch</h3>
-          <div>
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='balanceBaccount' label="address" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='balanceBids' label="uint256" variant="outlined" />
-          </div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
-        </div>
-        <div>
           <h3> Is Approved For All </h3> 
           <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAccount' label="address" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedOperator' label="address" variant="outlined" />
           </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApproved} > Call </Button>
         </div>
         <div>
           <h3>Owner</h3>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
-        </div>
-        <div>
-          <h3>Supports Interface</h3>
-          <div>
-          <TextField id="outlined-basic" sx={{width: '100%'}} id='supportsAddress' label="address" variant="outlined" />
-          </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}}> Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwner} > Call </Button>
         </div>
         <div>
           <h3>Uri</h3>
@@ -266,34 +359,8 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '100%'}} id='burnAmount' label="_amount" variant="outlined" />
         </div>
         <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getBurn}> Call </Button>
         </div>
-        <h3>Initialize</h3>
-        <div>
-          <TextField id="outlined-basic" sx={{width: '100%'}} id='uri' label="uri_" variant="outlined" />
-        </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}}> Call </Button>
-        <h3>Mint</h3>
-        <div>
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='mintTo' label="_to" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='mintId' label="_id" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='mintAmount' label="_amount" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='mintData' label="_data" variant="outlined" />
-        </div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
-        <h3>Renounce Owner Ship</h3>
-        <div>
-          <Button variant="contained" sx={{width: '100%' , mt: 2}}> Call </Button>
-        </div>
-        <h3>Safe Batch Transfer From</h3>
-        <div>
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='sbtFrom' label="from" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='sbtTo' label="to" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='sbtIds' label="ids" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '50%'}} id='sbtAmounts' label="amount" variant="outlined" />
-          <TextField id="outlined-basic" sx={{width: '100%'}} id='sbtData' label="data" variant="outlined" />
-        </div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
         <h3>Safe Transfer From</h3>
         <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='stfFrom' label="from" variant="outlined" />
@@ -302,17 +369,13 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='stfAmounts' label="amount" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '100%'}} id='stfData' label="data" variant="outlined" />
         </div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getStf} > Call </Button>
         <h3>Set Approval For All</h3>
         <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="operator" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safApproved' label="approved" variant="outlined" />
         </div>
           <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
-        <h3>TransferOwnership</h3>
-        <div>
-          <TextField id="outlined-basic" sx={{width: '100%'}} id='transferOwner' label="newOwner" variant="outlined" />
-        </div>
       </TabPanel>
       </Box>
       </div>
