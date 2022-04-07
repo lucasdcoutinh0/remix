@@ -12,7 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
-import abi from '../contracts/NFTabi.json'
+import NFTabi from '../contracts/NFTabi.json'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -195,162 +195,79 @@ function NFT() {
   // Tabs End //
 
   // Contract Start //
-  const [contract, setContract] = useState(null);
-  const [signer, setSigner] = useState(null);
-
-  const contractAddress = "0x2f85416eB19C30361a63632E874886E8a5C4DA95"
-
-  const updateContract = () => {
-    try{
-      let tempProvider = new ethers.providers.JsonRpcProvider(url)
-      let tempSigner = tempProvider.getSigner(accountData.address)
-      setSigner(tempSigner)
-      let tempContract = new ethers.Contract(contractAddress, abi , tempSigner)
-      setContract(tempContract)
-      console.log(tempContract)
-    }
-    catch(err){
-      setButtonText("Connected With Error")
-    }
-  }
-
+ 
   async function Balance(e){
     e.preventDefault()
-    try{
-      const balanceAddress = document.getElementById('balanceAddress').value;
-      console.log(balanceAddress)
-      const tempBalance = await contract.balanceOf(balanceAddress)
-      const balanceParsed = ethers.utils.formatEther(tempBalance)
-      alert('The balance Is: ' + balanceParsed)
-    }
-    catch (err) {
-      console.log(err)
-      alert('Error: ' + err.message)
-    }
+      const balanceAddress = document.getElementById('balanceAddress').value;  
   }
   async function getApproved(e){
     e.preventDefault()
-    try{
-      let approvedId = parseInt(document.getElementById('getApprovedId').value);
-      const approved = await contract.getApproved(approvedId)
-      alert(approved)
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
+   let approvedId = parseInt(document.getElementById('getApprovedId').value);
   }
   async function getName(e){
     e.preventDefault()
-    console.log(contract)
-      alert('Name: ' + await contract.name())
   }
   async function getOwnerOf(e){
     e.preventDefault()
-    try{
-      const ownerId = document.getElementById('ownerOfTokenId').value;
-      alert('Owner: ' + await contract.ownerOf(ownerId))
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
-  }
-  async function getSupportsInterface(e){
-    e.preventDefault()
-    try{
-      const id = document.getElementById('supportsInterfaceId').value;
-      alert('Supports Interface: ' + await contract.supportsInterface(parseInt(id)));
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
+    const ownerId = document.getElementById('ownerOfTokenId').value;
+    
   }
   async function getSymbol(e){
     e.preventDefault()
-    try{
-      alert('Symbol: ' + await contract.symbol())
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
   }
   async function getTokenURI(e){
     e.preventDefault()
-    try{
       const tokenUriId = document.getElementById('tokenUriId').value;
-      alert('Token URI: ' + await contract.tokenURI(parseInt(tokenUriId)));
-    }
-    catch (err) {
-      alert('Error: ' + err.message)
-    }
   }
   async function getApprove(e){
     e.preventDefault()
-    try{
       const approveTo = document.getElementById('approveTo').value;
       const approveTokenId = document.getElementById('approveTokenId').value;
-      alert('Approve Token: ' + await contract.approve(approveTo, parseInt(approveTokenId)));
-    }
-    catch(err){
-      alert('Error: ' + err.message);
-    }
-  }
-  async function getInitialize(e){
-    e.preventDefault()
-    try{
-      const initializeName = document.getElementById('initializeName').value;
-      const initializeSymbol = document.getElementById('initializeSymbol').value;
-      alert('Initialize' + await contract.initialize(initializeName, initializeSymbol));
-    }
-    catch(err){
-      alert('Error: ' + err.message);
-    }
-  }
-  async function getMint(e){
-    e.preventDefault()
-    try{
-      const mintTo = document.getElementById('mintTo').value;
-      const mintTokenId = document.getElementById('mintTokenId').value;
-      alert('Mint' + await contract.mint(mintTo, parseInt(mintTokenId)));
-    }
-    catch (err) {
-      alert('Error: ' + err.message);
-    }
   }
   async function getRenounce(e){
     e.preventDefault()
-    try{
-      alert('Renounce : ' + await contract.renounceOwnership())
-    }
-    catch (err) { alert('Error: ' + err.message); }
   }
   async function getStfFrom(e){
     e.preventDefault()
-    try{
       const stfFrom = document.getElementById('stfFrom').value;
       const stfTo = document.getElementById('stfTo').value;
       const stfTokenId = document.getElementById('stfTokenId').value;
-      alert('Safe Transfer From : ' + await contract.safeTransferFrom(stfFrom, stfTo, stfTokenId))
-    }
-    catch (err) { alert('Error: ' + err.message); }
   }
   async function getSbmuri(e){
-    try{
       const sbmuriData = document.getElementById('sbmuri').value;
-      alert('Safe Transfer From : ' + await contract.setBaseMetadataURI(sbmuriData))
-    }
-    catch (err) { alert('Error: ' + err.message); }
   }
   async function getSafeTransfer(e){
     e.preventDefault();
     const transferFrom = document.getElementById('transferFrom').value;
     const transferFromTo = document.getElementById('transferFromTo').value;
     const transferFromTokenId = parseInt(document.getElementById('transferFromTokenId').value);
-    alert('Safe Transfer : ' + await contract.transferFrom(transferFrom, transferFromTo, transferFromTokenId))
   }
   async function getTransferownership(e){
     e.preventDefault();
     const transferownership = document.getElementById('transferownership').value;
-    alert('Transferownership : ' + await contract.transferOwnership())
+  }
+
+
+  const contractAddress = '0x2f85416eB19C30361a63632E874886E8a5C4DA95'
+
+  const [provider, setProvider] = useState(null)
+  const [signer, setSigner] = useState(null)
+  const [contract, setContract] = useState(null)
+
+  const updateContract = async () => {
+   try{
+    let tempProvider = new ethers.providers.JsonRpcProvider(url)
+    console.log(tempProvider)
+    setProvider(tempProvider)
+    let tempSigner = tempProvider.getSigner(accountData.address)
+    console.log(tempSigner)
+    setSigner(tempSigner)
+    let tempContract = new ethers.Contract(contractAddress, NFTabi, tempSigner)
+    console.log(await tempContract.name())
+   }
+   catch (err) {
+    
+   }
   }
 
   const connectWallet = () => {
@@ -384,26 +301,6 @@ function NFT() {
           </div>
           <div>
             <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprove}> Call </Button>
-          </div>
-        </div>
-        <div>
-          <h3>Initialize</h3>
-          <div>
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='initializeName' label="name_" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='initializeSymbol' label="symbol_" variant="outlined" />
-          </div>
-          <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getInitialize} > Call </Button>
-          </div>
-        </div>
-        <div>
-          <h3>Mint</h3>
-          <div>
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='mintTo' label="_to" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='mintTokenId' label="_tokenId" variant="outlined" />
-          </div>
-          <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getMint}> Call </Button>
           </div>
         </div>
         <div>
@@ -488,15 +385,6 @@ function NFT() {
         <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwnerOf}> Call </Button>
       </div>
     </div>
-  <div>
-    <h3>Supports Interface</h3>
-    <div>
-    <TextField id="outlined-basic" sx={{width: '100%'}} id='supportsInterfaceId' label="tokenId" variant="outlined" />
-    </div>
-    <div>
-      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSupportsInterface}> Call </Button>
-    </div>
-  </div>
   <div>
     <h3>Symbol</h3>
     <div>
