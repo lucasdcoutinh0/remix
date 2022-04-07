@@ -256,28 +256,22 @@ function NFT() {
 
   const contractAddress = '0x896e492558c1f2920e98a422e541a5056b7eCBFa'
 
-  const [provider, setProvider] = useState(null)
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)
 
   const updateContract = async () => {
-   try{
-    let tempProvider = new ethers.providers.JsonRpcProvider(url)
-    console.log(tempProvider)
-    setProvider(tempProvider)
-    let tempSigner = tempProvider.getSigner(accountData.address)
-    console.log(tempSigner)
+    try{
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", [])
+    const tempSigner = provider.getSigner()
     setSigner(tempSigner)
-    let tempContract = new ethers.Contract(contractAddress, nft_abi, tempSigner)
+    const tempContract = new ethers.Contract(contractAddress, nft_abi, tempSigner)
     console.log(await tempContract.name())
     setContract(tempContract)
-   }
-   catch (err) {
-      alert('Error on connect to Mumbai, please try again' + err.message)
-      setButtonText('Connection Failed')
-   }
+    }catch(err){
+      alert('Error to connect Wallet, please try again later')
+    }
   }
-
   const connectWallet = () => {
     handleWalletConnection()
     updateContract()
