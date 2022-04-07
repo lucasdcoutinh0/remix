@@ -8,3 +8,4 @@ typechain
 *.pack
 *.old
 
+node_modules/.cache/default-development/24.pack
