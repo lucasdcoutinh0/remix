@@ -12,7 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
-import NFTabi from '../contracts/NFTabi.json'
+import nft_abi from '../contracts/nft_abi.json'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -198,7 +198,7 @@ function NFT() {
  
   async function Balance(e){
     e.preventDefault()
-      const balanceAddress = document.getElementById('balanceAddress').value;  
+    const balanceAddress = document.getElementById('balanceAddress').value;  
   }
   async function getApproved(e){
     e.preventDefault()
@@ -206,6 +206,12 @@ function NFT() {
   }
   async function getName(e){
     e.preventDefault()
+    try{
+      alert('Contract Name: ' + await contract.name())
+    }
+    catch(err){
+      alert('Error on retrive inform')
+    }
   }
   async function getOwnerOf(e){
     e.preventDefault()
@@ -248,7 +254,7 @@ function NFT() {
   }
 
 
-  const contractAddress = '0x2f85416eB19C30361a63632E874886E8a5C4DA95'
+  const contractAddress = '0x896e492558c1f2920e98a422e541a5056b7eCBFa'
 
   const [provider, setProvider] = useState(null)
   const [signer, setSigner] = useState(null)
@@ -262,11 +268,13 @@ function NFT() {
     let tempSigner = tempProvider.getSigner(accountData.address)
     console.log(tempSigner)
     setSigner(tempSigner)
-    let tempContract = new ethers.Contract(contractAddress, NFTabi, tempSigner)
+    let tempContract = new ethers.Contract(contractAddress, nft_abi, tempSigner)
     console.log(await tempContract.name())
+    setContract(tempContract)
    }
    catch (err) {
-    
+      alert('Error on connect to Mumbai, please try again' + err.message)
+      setButtonText('Connection Failed')
    }
   }
 

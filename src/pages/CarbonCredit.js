@@ -12,7 +12,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
-import abi from '../contracts/NFTabi.json'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
