@@ -198,11 +198,34 @@ function NFT() {
  
   async function Balance(e){
     e.preventDefault()
-    const balanceAddress = document.getElementById('balanceAddress').value;  
+    try{
+      const balanceAddress = document.getElementById('balanceAddress').value;
+      const tempBalance = await contract.balanceOf(balanceAddress)
+      const tempParsed = tempBalance.toNumber()
+      alert("Balance: " + tempParsed)
+    }  
+    catch(err){
+      console.log(err)
+    }
   }
   async function getApproved(e){
     e.preventDefault()
-   let approvedId = parseInt(document.getElementById('getApprovedId').value);
+    try{
+      const approvedId = parseInt(document.getElementById('getApprovedId').value);
+      console.log(approvedId)
+      const approved = await contract.getApproved(approvedId)
+      alert("Approved: " + approved)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getApprovedAll(e){
+    e.preventDefault()
+    const approvedOwner = document.getElementById('approvedAllOwner').value
+    const approvedOperator = document.getElementById('approvedAllOperator').value
+    const approvedAll = await contract.isApprovedForAll(approvedOwner, approvedOperator)
+    alert("Is Approved For All: " + approvedAll)
   }
   async function getName(e){
     e.preventDefault()
@@ -213,44 +236,125 @@ function NFT() {
       alert('Error on retrive inform')
     }
   }
-  async function getOwnerOf(e){
+  async function getOwner(e){
     e.preventDefault()
-    const ownerId = document.getElementById('ownerOfTokenId').value;
-    
+    try{
+      alert("Owner: " + await contract.owner())
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getOwnerOf(e){
+    try{
+      e.preventDefault()
+      const ownerId = parseInt(document.getElementById('ownerOfTokenId').value);
+      const ownerOf = await contract.ownerOf(ownerId);
+      alert("Owner: " + ownerOf)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getSymbol(e){
     e.preventDefault()
+    try{
+      alert('Symbol: ' + await contract.symbol())
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getTokenURI(e){
     e.preventDefault()
-      const tokenUriId = document.getElementById('tokenUriId').value;
+    try{
+      const tokenUriId = parseInt(document.getElementById('tokenUriId').value);
+      const tokenUri = await contract.tokenURI(tokenUriId)
+      alert("Token URI: " + tokenUri)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getApprove(e){
     e.preventDefault()
+    try{
       const approveTo = document.getElementById('approveTo').value;
-      const approveTokenId = document.getElementById('approveTokenId').value;
+      const approveTokenId = parseInt(document.getElementById('approveTokenId').value);
+      const approve = await contract.approve(approveTo, approveTokenId)
+      alert('Approve: ' + approve)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getRenounce(e){
     e.preventDefault()
+    try{
+      const renounce = await contract.renounceOwnership()
+      alert("Renounce: " + renounce)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getStfFrom(e){
     e.preventDefault()
+    try{
       const stfFrom = document.getElementById('stfFrom').value;
       const stfTo = document.getElementById('stfTo').value;
-      const stfTokenId = document.getElementById('stfTokenId').value;
+      const stfTokenId = parseInt(document.getElementById('stfTokenId').value);
+      const stf = await contract.safeTransferFrom(stfFrom, stfTo, stfTokenId)
+      alert("Safe transfer from :" + stf)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  async function getSaf(e){
+    try{
+      const safOperator = document.getElementById('safOperator').value;
+      const safApproved = document.getElementById('safApproved').value;
+      const saf = await contract.setApprovalForAll(safOperator, safApproved)
+      alert('Safe Approval For All: ' + saf)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getSbmuri(e){
-      const sbmuriData = document.getElementById('sbmuri').value;
+      try{
+        const sbmuriData = document.getElementById('sbmuri').value;
+        const sbmuri = await contract.setBaseMetadataURI(sbmuriData)
+        alert('Safe Base MetaData URI: ' + sbmuri )
+      }
+      catch(err){
+        console.log(err)
+      }
   }
-  async function getSafeTransfer(e){
+  async function getTransfer(e){
     e.preventDefault();
-    const transferFrom = document.getElementById('transferFrom').value;
-    const transferFromTo = document.getElementById('transferFromTo').value;
-    const transferFromTokenId = parseInt(document.getElementById('transferFromTokenId').value);
+    try{
+      const transferFrom = document.getElementById('transferFrom').value;
+      const transferFromTo = document.getElementById('transferFromTo').value;
+      const transferFromTokenId = parseInt(document.getElementById('transferFromTokenId').value);
+      const transfer = await contract.transferFrom(transferFrom, transferFromTo, transferFromTokenId)
+      alert("Transfer From: " + transfer)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   async function getTransferownership(e){
     e.preventDefault();
-    const transferownership = document.getElementById('transferownership').value;
+    try{
+      const transferownership = document.getElementById('transferownership').value;
+      const transferOwner = await contract.transferOwnership(transferownership)
+      alert("Transfer Ownership: " + transferOwner)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
 
@@ -324,6 +428,16 @@ function NFT() {
           </div>
         </div>
         <div>
+          <h3>Set Approval For All</h3>
+          <div>
+            <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="to" variant="outlined" />
+            <TextField id="outlined-basic" sx={{width: '50%'}} id='safApproved' label="tokenId" variant="outlined" />
+          </div>
+          <div>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSaf}> Call </Button>
+          </div>
+        </div>
+        <div>
           <h3>Set Base Metadata Uri</h3>
           <div>
             <TextField sx={{width: '100%'}} id="outlined-basic" id='sbmuri' label="_newBaseMetadataURI" variant="outlined" />
@@ -340,7 +454,7 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='transferFromTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSafeTransfer} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTransfer} > Call </Button>
           </div>
         </div> 
         <div>
@@ -372,10 +486,24 @@ function NFT() {
         <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApproved}> Call </Button>
       </div>
     </div>
+    <h3>Is Approved for All</h3>
+    <div>
+      <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAllOwner' label="Owner" variant="outlined" />
+      <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAllOperator' label="Operator" variant="outlined" />
+    </div>
+    <div>
+      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprovedAll}> Call </Button>
+    </div>
     <div>
       <h3>Name</h3>
       <div>
         <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getName}> Call </Button>
+      </div>
+    </div>
+    <div>
+      <h3>Owner</h3>
+      <div>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwner}> Call </Button>
       </div>
     </div>
     <div>

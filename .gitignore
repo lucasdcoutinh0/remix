@@ -7,5 +7,4 @@ typechain
 *.pack
 *.pack
 *.old
-
-node_modules/.cache/default-development/24.pack
+node_modules/.cache/
