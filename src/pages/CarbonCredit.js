@@ -292,7 +292,7 @@ const CarbonCredit = () => {
       console.log(err)
     }
   }
-  async function saf(e){
+  async function getSaf(e){
     e.preventDefault()
     try{
       const safOperator = document.getElementById('safOperator').value
@@ -375,7 +375,7 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="operator" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safApproved' label="approved" variant="outlined" />
         </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSaf}> Call </Button>
       </TabPanel>
       </Box>
       </div>
