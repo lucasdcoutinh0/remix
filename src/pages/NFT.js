@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
 import nft_abi from '../contracts/nft_abi.json'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -386,7 +387,7 @@ function NFT() {
       <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> NFT </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> <a href="/"><ArrowBackIcon sx={{color: 'white'}}/></a> NFT </Typography>
           <Button color="inherit" onClick={connectWallet}> {buttonText} </Button>
         </Toolbar>
       </AppBar>

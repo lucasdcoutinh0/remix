@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
 import carbon_abi from '../contracts/carbon_abi.json'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -310,7 +311,7 @@ const CarbonCredit = () => {
           <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> Carbon Credit </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}> <a href="/"><ArrowBackIcon sx={{color: 'white'}}/></a> <a>Carbon Credit</a> </Typography>
           <Button color="inherit" onClick={connectWallet}> {buttonText} </Button>
         </Toolbar>
       </AppBar>

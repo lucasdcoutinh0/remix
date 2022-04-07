@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import NFT from './pages/NFT';
 import CarbonCredit from './pages/CarbonCredit';
 import Home from './pages/Home';
+import Solid from './pages/Solid';
 import { Provider, chain, defaultL2Chains } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { BrowserRouter, Routes, Route} from "react-router-dom"
@@ -27,6 +28,7 @@ ReactDOM.render(
     <Routes>
     <Route path="/" element={<Home/>}/>
     <Route path="/nft" element={<NFT/>}/>
+    <Route path="/solid" element={<Solid/>}/>
     <Route path="/carboncredit" element={<CarbonCredit/>}/>
     </Routes>
     </BrowserRouter>

@@ -1,5 +1,3 @@
-import { enqueueRender } from '../component';
-
 /**
  * Find the closest error boundary to a thrown error and call it
  * @param {object} error The thrown value
@@ -9,28 +7,27 @@ import { enqueueRender } from '../component';
  */
 export function _catchError(error, vnode) {
 	/** @type {import('../internal').Component} */
-	let component, hasCaught;
+	let component, ctor, handled;
 
 	for (; (vnode = vnode._parent); ) {
 		if ((component = vnode._component) && !component._processingException) {
 			try {
-				if (
-					component.constructor &&
-					component.constructor.getDerivedStateFromError != null
-				) {
-					hasCaught = true;
-					component.setState(
-						component.constructor.getDerivedStateFromError(error)
-					);
+				ctor = component.constructor;
+
+				if (ctor && ctor.getDerivedStateFromError != null) {
+					component.setState(ctor.getDerivedStateFromError(error));
+					handled = component._dirty;
 				}
 
 				if (component.componentDidCatch != null) {
-					hasCaught = true;
 					component.componentDidCatch(error);
+					handled = component._dirty;
 				}
 
-				if (hasCaught)
-					return enqueueRender((component._pendingError = component));
+				// This is an error boundary. Mark it as having bailed out, and whether it was mid-hydration.
+				if (handled) {
+					return (component._pendingError = component);
+				}
 			} catch (e) {
 				error = e;
 			}

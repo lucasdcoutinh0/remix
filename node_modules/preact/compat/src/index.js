@@ -26,9 +26,14 @@ import { Children } from './Children';
 import { Suspense, lazy } from './suspense';
 import { SuspenseList } from './suspense-list';
 import { createPortal } from './portals';
-import { hydrate, render, REACT_ELEMENT_TYPE } from './render';
+import {
+	hydrate,
+	render,
+	REACT_ELEMENT_TYPE,
+	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+} from './render';
 
-const version = '16.8.0'; // trick libraries to think we are react
+const version = '17.0.2'; // trick libraries to think we are react
 
 /**
  * Legacy version of createElement.
@@ -95,6 +100,23 @@ function findDOMNode(component) {
 // eslint-disable-next-line camelcase
 const unstable_batchedUpdates = (callback, arg) => callback(arg);
 
+/**
+ * In React, `flushSync` flushes the entire tree and forces a rerender. It's
+ * implmented here as a no-op.
+ * @template Arg
+ * @template Result
+ * @param {(arg: Arg) => Result} callback function that runs before the flush
+ * @param {Arg} [arg] Optional arugment that can be passed to the callback
+ * @returns
+ */
+const flushSync = (callback, arg) => callback(arg);
+
+/**
+ * Strict Mode is not implemented in Preact, so we provide a stand-in for it
+ * that just renders its children without imposing any restrictions.
+ */
+const StrictMode = Fragment;
+
 export * from 'preact/hooks';
 export {
 	version,
@@ -115,11 +137,14 @@ export {
 	PureComponent,
 	memo,
 	forwardRef,
+	flushSync,
 	// eslint-disable-next-line camelcase
 	unstable_batchedUpdates,
+	StrictMode,
 	Suspense,
 	SuspenseList,
-	lazy
+	lazy,
+	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 };
 
 // React copies the named exports to the default one.
@@ -137,7 +162,7 @@ export default {
 	version,
 	Children,
 	render,
-	hydrate: render,
+	hydrate,
 	unmountComponentAtNode,
 	createPortal,
 	createElement,
@@ -152,8 +177,11 @@ export default {
 	PureComponent,
 	memo,
 	forwardRef,
+	flushSync,
 	unstable_batchedUpdates,
+	StrictMode,
 	Suspense,
 	SuspenseList,
-	lazy
+	lazy,
+	__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 };
