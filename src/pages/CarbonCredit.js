@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import '../base.css'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -255,6 +256,9 @@ const CarbonCredit = () => {
       console.log(err)
     }
   }
+
+  const [burnMsg, setBurnMsg] = useState(null)
+
   async function Burn(e){
     e.preventDefault()
     try{
@@ -262,12 +266,16 @@ const CarbonCredit = () => {
       const burnId = parseInt(document.getElementById('burnId').value);
       const burnAmount = parseInt(document.getElementById('burnAmount').value);
       const burn = await contract.burn(burnAccount, burnId, burnAmount)
-      alert("Burn: " + burn)
+      alert("Burning.... please wait 2 blocks to complete the transaction")
+      setBurnMsg("Burned on hash: " + burn.hash)
     }
     catch(err){
       console.log(err)
     }
   }
+
+  const [stfMsg, setStfMsg] = useState(null)
+
   async function Stf(e){
     e.preventDefault()
     try{
@@ -276,18 +284,24 @@ const CarbonCredit = () => {
       const stfId = parseInt(document.getElementById('stfIds')).value
       const stfAmount = parseInt(document.getElementById('stfAmounts')).value
       const stf = await contract.safeTransferFrom(stfFrom, stfTo, stfId, stfAmount, [])
-      alert("Safe transfer from: " + stf)
+      alert("Safe transfering... please wait 2 blocks to complete the transaction")
+      setStfMsg('Safe transfered on hash: ' + stf.hash)
+
     }
     catch(err){
       console.log(err)
     }
   }
+
+  const [safMsg, setSafMsg] = useState(null)
+
   async function Saf(e){
     e.preventDefault()
       try{
         const safOperator = document.getElementById('safOperator').value
         const saf = await contract.setApprovalForAll(safOperator, select)
-        alert("Safe Approval for All: " + saf)
+        alert("Safe Approving for All... please wait 2 blocks to complete the transaction")
+        setSafMsg("Safe Approved on hash: " + saf.hash)
       }
       catch(err){
         console.log(err)
@@ -354,6 +368,9 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='burnId' label="id" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '100%'}} id='burnAmount' label="_amount" variant="outlined" />
         </div>
+        <div className="msg">
+          {burnMsg}
+        </div>
         <div>
           <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Burn}> Call </Button>
         </div>
@@ -365,6 +382,9 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='stfAmounts' label="amount" variant="outlined" />
         </div>
         <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Stf} > Call </Button>
+        <div className="msg">
+          {stfMsg}
+        </div>
         <h3>Set Approval For All</h3>
         <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='safOperator' label="operator" variant="outlined" />
@@ -375,9 +395,11 @@ const CarbonCredit = () => {
           <MenuItem value={false}>False</MenuItem>
         </Select>
       </FormControl>
-   
         </div>
           <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Saf}> Call </Button>
+          <div className="msg">
+          {safMsg}
+        </div>
       </TabPanel>
       </Box>
       </div>
