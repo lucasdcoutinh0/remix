@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import '../base.css'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -201,7 +202,7 @@ function NFT() {
 
   // Contract Start //
  
-  async function Balance(e){
+  async function balance(e){
     e.preventDefault()
     try{
       const balanceAddress = document.getElementById('balanceAddress').value;
@@ -213,7 +214,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function Approved(e){
+  async function approved(e){
     e.preventDefault()
     try{
       const approvedId = parseInt(document.getElementById('getApprovedId').value);
@@ -225,14 +226,14 @@ function NFT() {
       console.log(err)
     }
   }
-  async function ApprovedAll(e){
+  async function approvedAll(e){
     e.preventDefault()
     const approvedOwner = document.getElementById('approvedAllOwner').value
     const approvedOperator = document.getElementById('approvedAllOperator').value
     const approvedAll = await contract.isApprovedForAll(approvedOwner, approvedOperator)
     alert("Is Approved For All: " + approvedAll)
   }
-  async function Name(e){
+  async function name(e){
     e.preventDefault()
     try{
       alert('Contract Name: ' + await contract.name())
@@ -241,7 +242,7 @@ function NFT() {
       alert('Error on retrive inform')
     }
   }
-  async function Owner(e){
+  async function owner(e){
     e.preventDefault()
     try{
       alert("Owner: " + await contract.owner())
@@ -250,7 +251,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function OwnerOf(e){
+  async function ownerOf(e){
     try{
       e.preventDefault()
       const ownerId = parseInt(document.getElementById('ownerOfTokenId').value);
@@ -261,7 +262,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function Symbol(e){
+  async function symbol(e){
     e.preventDefault()
     try{
       alert('Symbol: ' + await contract.symbol())
@@ -270,7 +271,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function TokenURI(e){
+  async function tokenURI(e){
     e.preventDefault()
     try{
       const tokenUriId = parseInt(document.getElementById('tokenUriId').value);
@@ -281,82 +282,110 @@ function NFT() {
       console.log(err)
     }
   }
-  async function Approve(e){
+
+  const [approveMsg, setApproveMsg] = useState(null)
+
+  async function approve(e){
     e.preventDefault()
     try{
       const approveTo = document.getElementById('approveTo').value;
       const approveTokenId = parseInt(document.getElementById('approveTokenId').value);
       const approve = await contract.approve(approveTo, approveTokenId)
-      alert('Approve: ' + approve)
+      alert('Approving...  Please wait 2 Blocks to complete the transaction')
+      setApproveMsg('Approved on hash: ' + approve.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function Renounce(e){
+
+  const [renounceMsg, setRenounceMsg] = useState(null)
+
+  async function renounce(e){
     e.preventDefault()
     try{
       const renounce = await contract.renounceOwnership()
-      alert("Renounce: " + renounce)
+      alert("Renouncing... please wait 2 blocks to complete the transaction")
+      setRenounceMsg("Renounced on hash: " + renounce.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function StfFrom(e){
+
+  const [stfMsg, setStfMsg] = useState(null)
+
+  async function stfFrom(e){
     e.preventDefault()
     try{
       const stfFrom = document.getElementById('stfFrom').value;
       const stfTo = document.getElementById('stfTo').value;
       const stfTokenId = parseInt(document.getElementById('stfTokenId').value);
       const stf = await contract.safeTransferFrom(stfFrom, stfTo, stfTokenId)
-      alert("Safe transfer from :" + stf)
+      alert("Safe transfering... please wait 2 blocks to complete the transaction")
+      setStfMsg("Safe transfered on Hash: " + stf.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function Saf(e){
+
+  const [safMsg, setSafMsg] = useState(null)
+
+  async function saf(e){
     e.preventDefault()
     try{
       const safOperator = document.getElementById('safOperator').value;
       const saf = await contract.setApprovalForAll(safOperator, select)
-      alert('Safe Approval For All: ' + saf)
+      alert('Safe Approving... please wait 2 blocks to complete the transaction')
+      setSafMsg('Safe Approved on hash: ' + saf.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function Sbmuri(e){
+
+  const [sbmuriMsg, setSbmuriMsg] = useState(null)
+
+  async function sbmUri(e){
     e.preventDefault()
       try{
         const sbmuriData = document.getElementById('sbmuri').value;
         const sbmuri = await contract.setBaseMetadataURI(sbmuriData)
-        alert('Safe Base MetaData URI: ' + sbmuri )
+        alert('Safe Basing Metadata... please wait 2 blocks to complete the transaction')
+        setSbmuriMsg('Safe based Metadata on hash: ' + sbmUri.hash)
       }
       catch(err){
         console.log(err)
       }
   }
-  async function Transfer(e){
+
+  const [transferMsg, setTransferMsg] = useState(null)
+
+  async function transfer(e){
     e.preventDefault();
     try{
       const transferFrom = document.getElementById('transferFrom').value;
       const transferFromTo = document.getElementById('transferFromTo').value;
       const transferFromTokenId = parseInt(document.getElementById('transferFromTokenId').value);
       const transfer = await contract.transferFrom(transferFrom, transferFromTo, transferFromTokenId)
-      alert("Transfer From: " + transfer)
+      alert("Transfering.... please wait 2 blocks to complete the transaction")
+      setTransferMsg('Transfered on hash: ' + transfer.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function Transferownership(e){
+
+  const [transferOwnerMsg, setTransferOwnerMsg] = useState(null)
+
+  async function transferownership(e){
     e.preventDefault();
     try{
       const transferownership = document.getElementById('transferownership').value;
       const transferOwner = await contract.transferOwnership(transferownership)
-      alert("Transfer Ownership: " + transferOwner)
+      alert("Transfering Ownership... please wait 2 blocks to complete the transaction")
+      setTransferOwnerMsg("Transfered on hash: " + transferOwner.hash)
     }
     catch(err){
       console.log(err)
@@ -418,14 +447,20 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='approveTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Approve}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={approve}> Call </Button>
           </div>
+        <div className="msg">
+          {approveMsg}
+        </div>
         </div>
         <div>
           <h3>Renounce Ownership</h3>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Renounce} > Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={renounce} > Call </Button>
           </div>
+        </div>
+        <div className="msg">
+          {renounceMsg}
         </div>
         <div>
           <h3>Safe Transfer From</h3>
@@ -435,8 +470,11 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '100%'}} id='stfTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={StfFrom}> Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={stfFrom}> Call </Button>
           </div>
+          <div className="msg">
+          {stfMsg}
+        </div>
         </div>
         <div>
           <h3>Set Approval For All</h3>
@@ -451,8 +489,11 @@ function NFT() {
             </FormControl>
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Saf}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={saf}> Call </Button>
           </div>
+          <div className="msg">
+          {safMsg}
+        </div>
         </div>
         <div>
           <h3>Set Base Metadata Uri</h3>
@@ -460,8 +501,11 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='sbmuri' label="_newBaseMetadataURI" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Sbmuri}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={sbmUri}> Call </Button>
           </div>
+          <div className="msg">
+          {sbmuriMsg}
+        </div>
         </div>
         <div>
           <h3>Transfer from</h3>
@@ -471,8 +515,11 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='transferFromTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Transfer} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={transfer} > Call </Button>
           </div>
+          <div className="msg">
+          {transferMsg}
+        </div>
         </div> 
         <div>
           <h3>Transfer Ownership</h3>
@@ -480,8 +527,11 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '100%'}} id='transferownership' label="To"></TextField>
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Transferownership}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={transferownership}> Call </Button>
           </div>
+          <div className="msg">
+          {transferOwnerMsg}
+        </div>
         </div> 
     </TabPanel>
     <TabPanel value={value} index={0}>
@@ -491,7 +541,7 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='balanceAddress' label="address" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Balance}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={balance}> Call </Button>
       </div>
     </div>
     <div>
@@ -500,7 +550,7 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='getApprovedId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Approved}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={approved}> Call </Button>
       </div>
     </div>
     <h3>Is Approved for All</h3>
@@ -509,18 +559,18 @@ function NFT() {
       <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAllOperator' label="Operator" variant="outlined" />
     </div>
     <div>
-      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={ApprovedAll}> Call </Button>
+      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={approvedAll}> Call </Button>
     </div>
     <div>
       <h3>Name</h3>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Name}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={name}> Call </Button>
       </div>
     </div>
     <div>
       <h3>Owner</h3>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Owner}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={owner}> Call </Button>
       </div>
     </div>
     <div>
@@ -529,13 +579,13 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='ownerOfTokenId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={OwnerOf}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={ownerOf}> Call </Button>
       </div>
     </div>
   <div>
     <h3>Symbol</h3>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Symbol}> Call </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={symbol}> Call </Button>
     </div>
   </div>
   <div>
@@ -544,7 +594,7 @@ function NFT() {
     <TextField id="outlined-basic" sx={{width: '100%'}} id='tokenUriId' label="_id" variant="outlined" />
     </div>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={TokenURI}> Call </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={tokenURI}> Call </Button>
     </div>
   </div>
     </TabPanel>

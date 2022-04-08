@@ -260,16 +260,13 @@ const Solid = () => {
 
   async function createSolid(e){
     e.preventDefault()
-      try{
-        const createAddress = document.getElementById('createAddress').value;
+      const createAddress = document.getElementById('createAddress').value;
       const createAmount = parseInt(document.getElementById('createAmount').value);
       const create = await contract.create(createAddress, createAmount, [])
       alert('Creating...  Please wait 2 Blocks to complete the transaction')
       setCreateMsg('Carbon Credit Creation Hash: ' + create.hash)
-      }
-      catch(err){
-        console.log(err)
-      }
+      console.log(await create.value.toString())
+     
 
   }
 
