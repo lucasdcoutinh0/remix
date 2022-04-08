@@ -14,6 +14,7 @@ import { useConnect, useAccount } from 'wagmi';
 import { ethers } from "ethers";
 import solid_abi from '../contracts/solid_abi.json'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import '../base.css'
 
 const defaultUserWalletState = {
   address: '0x0000000000000000000000000000000000000000',
@@ -218,7 +219,7 @@ const Solid = () => {
     updateContract()
   }
 
-  async function AccessControls(e){
+  async function accessControls(e){
       e.preventDefault()
       try{
           alert('Access Controls: ' + await contract.accessControls())
@@ -227,7 +228,7 @@ const Solid = () => {
           console.log(err)
       }
   }
-  async function CarbonContract(e){
+  async function carbonContract(e){
       e.preventDefault()
       try{
         alert('Carbon Credit Contracts: ' + await contract.carboncreditContract())
@@ -236,7 +237,7 @@ const Solid = () => {
           console.log(err)
       }
   }
-  async function NftContract(e){
+  async function nftContract(e){
       e.preventDefault()
       try{
           alert('Nft Contract: ' + await contract.nftContract())
@@ -245,7 +246,7 @@ const Solid = () => {
           console.log(err)
       }
   }
-  async function Owner(e){
+  async function owner(e){
       e.preventDefault()
       try{
           alert('Owner: ' + await contract.owner())
@@ -254,55 +255,75 @@ const Solid = () => {
           console.log(err)
       }
   }
+
+  const [createMsg, setCreateMsg] = useState(null)
+
   async function createSolid(e){
     e.preventDefault()
-    try{
-      const createAddress = document.getElementById('createAddress').value;
+      try{
+        const createAddress = document.getElementById('createAddress').value;
       const createAmount = parseInt(document.getElementById('createAmount').value);
       const create = await contract.create(createAddress, createAmount, [])
-      alert('Carbon Credits Create: ' + create)
-    }
-    catch(err){
-      console.log(err)
-    }
+      alert('Creating...  Please wait 2 Blocks to complete the transaction')
+      setCreateMsg('Carbon Credit Creation Hash: ' + create.hash)
+      }
+      catch(err){
+        console.log(err)
+      }
+
   }
-  async function Burn(e){
+
+  const [burnMsg, setBurnMsg] = useState(null)
+
+  async function burn(e){
     e.preventDefault()
     try{
       const burnAddress = document.getElementById('burnAddress').value;
       const burnId = parseInt(document.getElementById('burnId').value);
       const burnAmount = parseInt(document.getElementById('burnAmount').value)
       const burn = await contract.burnCarbonCredit(burnAddress, burnId, burnAmount)
-      alert('Burn: ' + burn)
+      alert('Burning... Please wait 2 Blocks to complete the transaction')
+      setBurnMsg("Carbon Credit Burn Hash: " + burn.hash)
     }
     catch(err) {
       console.log(err)
     }
   }
-  async function Mint(e){
+
+  const [mintMsg, setMintMsg] = useState(null)
+
+  async function mint(e){
     e.preventDefault()
     try{
       const mintAddress = document.getElementById('mintAddress').value;
       const mintId = parseInt(document.getElementById('mintId').value)
       const mintAmount = parseInt(document.getElementById('mintAmount').value)
       const mint = await contract.mintCarbonCredit(mintAddress, mintId, mintAmount, [])
-      alert('Mint: ' + mint)
+      alert('Minting...  Please wait 2 Blocks to complete the transaction')
+      setMintMsg('Mint Hash' + mint.hash)
     }
     catch(err) {
       console.log(err)
     }
   }
-  async function SbmUri(e){
+
+  const [sbmUriMsg, setsbmUriMsg ] = useState(null)
+
+  async function sbmUri(e){
     e.preventDefault()
     try{
       const sbmUri = document.getElementById('sbmUri').value
-      alert('Set Base Metadata URI: ' + sbmUri)
+      alert('Setting... please wait 2 Blocks to complete the transaction')
+      setsbmUriMsg('Set Base Metadata Uri Hash: ' + sbmUri.hash)
     }
     catch(err) {
       console.log(err)
     }
   }
-  async function Tcc(e) {
+
+  const [tccMsg, setTccMsg] = useState(null)
+
+  async function tcc(e) {
     e.preventDefault()
     try{
       const tccSeller = document.getElementById('tccSeller').value;
@@ -310,40 +331,55 @@ const Solid = () => {
       const tccId = parseInt(document.getElementById('tccId').value);
       const tccAmount = parseInt(document.getElementById('tccAmount').value);
       const tcc = await contract.transferCarbonCredit(tccSeller, tccBuyer, tccId, tccAmount, []);
-      alert("Transfer Carbon Credit: " + tcc)
+      alert("Transfering... please wait 2 blocks to complete the transaction");
+      setTccMsg("Transfer Carbon Credit Hash: " + tcc.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function Nft(e){
+
+  const [nftMsg, setNftMsg] = useState(null)
+
+  async function nft(e){
     e.preventDefault()
     try{
       const nftSeller = document.getElementById('nftSeller').value;
       const nftBuyer = document.getElementById('nftBuyer').value;
       const nftId = parseInt(document.getElementById('nftId').value);
       const nft = await contract.transferNFT(nftSeller, nftBuyer, nftId, [])
-      alert('Transfer Nft: ' + nft)
+      alert('Transfering Nft... please wait 2 block to complete the transaction')
+      setNftMsg("Transfer NFT Hash: " + nft.hash)
     }
     catch(err){
       console.log(err)
     }
   }
+
+   const [ownerMsg, setOwnerMsg] = useState(null)
+
   async function transferOwner(e){
     e.preventDefault()
     try{
       const newOwner = document.getElementById('newOwner').value;
-    alert('Transfer Owner: ' + await contract.transferOwner(newOwner))
+      const transfer = await contract.transferOwner(newOwner)
+      alert('Transfering Owner.. please wait 2 blocks to complete the transaction')
+      setOwnerMsg("Transfer Owner Hash: " + transfer.hash)
     }
     catch(err){
       console.log(err)
     }
   }
-  async function UpdateAccess(e) {
+
+  const [updateMsg, setUpdateMsg] = useState(null)
+
+  async function updateAccess(e) {
     e.preventDefault()
     try{
       const updateAccess = document.getElementById('updateAccess').value
-    alert('Get Update Access: ' + await contract.getupdateAccess(updateAccess))
+      const update = await contract.getupdateAccess(updateAccess)
+    alert('Updatiing Access... please wait 2 blocks to complete the transaction')
+      setUpdateMsg("Updated on hash: " + update.hash)
     }
     catch(err){
       console.log(err)
@@ -371,25 +407,25 @@ const Solid = () => {
     <div>
         <h3>Access Controls</h3>
         <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={AccessControls}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={accessControls}> Call </Button>
         </div>
     </div>
     <div>
         <h3>Carbon Credit Contract</h3>
         <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={CarbonContract}> Call </Button> 
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={carbonContract}> Call </Button> 
         </div>
     </div>
     <div>
         <h3>NFT Contract</h3>
         <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={NftContract}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={nftContract}> Call </Button>
         </div>
     </div>
     <div>
         <h3>Owner</h3>
         <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Owner}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={owner}> Call </Button>
         </div>
     </div>
     </TabPanel>
@@ -402,7 +438,10 @@ const Solid = () => {
            <TextField id="outlined-basic" sx={{width: '100%'}} id='burnAmount' label="Amount" variant="outlined" />
            </div>
            <div>
-               <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Burn}> Call </Button>
+               <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={burn}> Call </Button>
+           </div>
+           <div className="msg">
+             {burnMsg}
            </div>
       </div>
       <div>
@@ -414,6 +453,9 @@ const Solid = () => {
         <div>
           <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={createSolid}> Call </Button>
         </div>
+        <div className="msg">
+          {createMsg}
+        </div>
       </div>
       <div>
           <h3>Mint Carbon Credit</h3>
@@ -423,7 +465,10 @@ const Solid = () => {
            <TextField id="outlined-basic" sx={{width: '100%'}} id='mintAmount' label="Amount" variant="outlined" />
           </div>
           <div>
-              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Mint}> Call </Button>
+              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={mint}> Call </Button>
+          </div>
+          <div className="msg">
+              {mintMsg}
           </div>
       </div>
       <div>
@@ -432,8 +477,9 @@ const Solid = () => {
           <TextField id="outlined-basic" sx={{width: '100%'}} id='sbmUri' label="New Base Metadata URI" variant="outlined" />
           </div>
           <div>
-              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={SbmUri}> Call </Button>
+              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={sbmUri}> Call </Button>
           </div>
+          <div className="msg">{sbmUriMsg}</div>
       </div>
       <div>
           <h3> Transfer Carbon Credit </h3>
@@ -444,18 +490,22 @@ const Solid = () => {
            <TextField id="outlined-basic" sx={{width: '50%'}} id='tccAmount' label="Amount" variant="outlined" />
           </div>
           <div>
-              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Tcc}> Call </Button>
+              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={tcc}> Call </Button>
           </div>
+          <div className="msg">{tccMsg}</div>
       </div>
       <div>
           <h3>Transfer NFT</h3>
           <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='nftSeller' label="Seller Address" variant="outlined" />
            <TextField id="outlined-basic" sx={{width: '50%'}} id='nftBuyer' label="Buyer Address" variant="outlined" />
-           <TextField id="outlined-basic" sx={{width: '50%'}} id='nftId' label="Id" variant="outlined" />
+           <TextField id="outlined-basic" sx={{width: '100%'}} id='nftId' label="Id" variant="outlined" />
           </div>
           <div>
-              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Nft}> Call </Button>
+              <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={nft}> Call </Button>
+          </div>
+          <div className="msg">
+            {nftMsg}
           </div>
       </div>
       <div>
@@ -464,13 +514,17 @@ const Solid = () => {
                 <TextField id="outlined-basic" sx={{width: '100%'}} id='newOwner' label="New Owner" variant="outlined" />
             </div>
             <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={transferOwner}> Call </Button>
+            <div className="msg">
+              {ownerMsg}
+            </div>
       </div>
       <div>
           <h3>Update Access Control</h3>
           <div>
           <TextField id="outlined-basic" sx={{width: '100%'}} id='updateAccess' label="Access Controls" variant="outlined" />
           </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={UpdateAccess}> Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={updateAccess}> Call </Button>
+          <div className="msg">{updateMsg}</div>
       </div>
     </TabPanel>
     </Box>
