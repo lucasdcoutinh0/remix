@@ -213,7 +213,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getApproved(e){
+  async function Approved(e){
     e.preventDefault()
     try{
       const approvedId = parseInt(document.getElementById('getApprovedId').value);
@@ -225,14 +225,14 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getApprovedAll(e){
+  async function ApprovedAll(e){
     e.preventDefault()
     const approvedOwner = document.getElementById('approvedAllOwner').value
     const approvedOperator = document.getElementById('approvedAllOperator').value
     const approvedAll = await contract.isApprovedForAll(approvedOwner, approvedOperator)
     alert("Is Approved For All: " + approvedAll)
   }
-  async function getName(e){
+  async function Name(e){
     e.preventDefault()
     try{
       alert('Contract Name: ' + await contract.name())
@@ -241,7 +241,7 @@ function NFT() {
       alert('Error on retrive inform')
     }
   }
-  async function getOwner(e){
+  async function Owner(e){
     e.preventDefault()
     try{
       alert("Owner: " + await contract.owner())
@@ -250,7 +250,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getOwnerOf(e){
+  async function OwnerOf(e){
     try{
       e.preventDefault()
       const ownerId = parseInt(document.getElementById('ownerOfTokenId').value);
@@ -261,7 +261,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getSymbol(e){
+  async function Symbol(e){
     e.preventDefault()
     try{
       alert('Symbol: ' + await contract.symbol())
@@ -270,7 +270,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getTokenURI(e){
+  async function TokenURI(e){
     e.preventDefault()
     try{
       const tokenUriId = parseInt(document.getElementById('tokenUriId').value);
@@ -281,7 +281,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getApprove(e){
+  async function Approve(e){
     e.preventDefault()
     try{
       const approveTo = document.getElementById('approveTo').value;
@@ -293,7 +293,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getRenounce(e){
+  async function Renounce(e){
     e.preventDefault()
     try{
       const renounce = await contract.renounceOwnership()
@@ -303,7 +303,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getStfFrom(e){
+  async function StfFrom(e){
     e.preventDefault()
     try{
       const stfFrom = document.getElementById('stfFrom').value;
@@ -316,7 +316,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getSaf(e){
+  async function Saf(e){
     e.preventDefault()
     try{
       const safOperator = document.getElementById('safOperator').value;
@@ -327,7 +327,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getSbmuri(e){
+  async function Sbmuri(e){
     e.preventDefault()
       try{
         const sbmuriData = document.getElementById('sbmuri').value;
@@ -338,7 +338,7 @@ function NFT() {
         console.log(err)
       }
   }
-  async function getTransfer(e){
+  async function Transfer(e){
     e.preventDefault();
     try{
       const transferFrom = document.getElementById('transferFrom').value;
@@ -351,7 +351,7 @@ function NFT() {
       console.log(err)
     }
   }
-  async function getTransferownership(e){
+  async function Transferownership(e){
     e.preventDefault();
     try{
       const transferownership = document.getElementById('transferownership').value;
@@ -364,7 +364,7 @@ function NFT() {
   }
 
 
-  const contractAddress = '0x5D9a0195f4A4542aea37F7fF257c21F9b4F3fbca'
+  const contractAddress = '0xeB9b010Ef35288378d8FF5da8ba84ec1183cC194'
 
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)
@@ -418,13 +418,13 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='approveTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprove}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Approve}> Call </Button>
           </div>
         </div>
         <div>
           <h3>Renounce Ownership</h3>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getRenounce} > Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Renounce} > Call </Button>
           </div>
         </div>
         <div>
@@ -432,11 +432,10 @@ function NFT() {
           <div>
             <TextField id="outlined-basic" sx={{width: '50%'}} id='stfFrom' label="from" variant="outlined" />
             <TextField id="outlined-basic" sx={{width: '50%'}} id='stfTo' label="to" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='stfTokenId' label="tokenId" variant="outlined" />
-            <TextField id="outlined-basic" sx={{width: '50%'}} id='stfData' label="_data" variant="outlined" />
+            <TextField id="outlined-basic" sx={{width: '100%'}} id='stfTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getStfFrom}> Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={StfFrom}> Call </Button>
           </div>
         </div>
         <div>
@@ -452,7 +451,7 @@ function NFT() {
             </FormControl>
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSaf}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Saf}> Call </Button>
           </div>
         </div>
         <div>
@@ -461,7 +460,7 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='sbmuri' label="_newBaseMetadataURI" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSbmuri}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Sbmuri}> Call </Button>
           </div>
         </div>
         <div>
@@ -472,7 +471,7 @@ function NFT() {
             <TextField sx={{width: '100%'}} id="outlined-basic" id='transferFromTokenId' label="tokenId" variant="outlined" />
           </div>
           <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTransfer} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Transfer} > Call </Button>
           </div>
         </div> 
         <div>
@@ -481,7 +480,7 @@ function NFT() {
             <TextField id="outlined-basic" sx={{width: '100%'}} id='transferownership' label="To"></TextField>
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTransferownership}> Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Transferownership}> Call </Button>
           </div>
         </div> 
     </TabPanel>
@@ -501,7 +500,7 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='getApprovedId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApproved}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Approved}> Call </Button>
       </div>
     </div>
     <h3>Is Approved for All</h3>
@@ -510,18 +509,18 @@ function NFT() {
       <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAllOperator' label="Operator" variant="outlined" />
     </div>
     <div>
-      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getApprovedAll}> Call </Button>
+      <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={ApprovedAll}> Call </Button>
     </div>
     <div>
       <h3>Name</h3>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getName}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Name}> Call </Button>
       </div>
     </div>
     <div>
       <h3>Owner</h3>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwner}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Owner}> Call </Button>
       </div>
     </div>
     <div>
@@ -530,13 +529,13 @@ function NFT() {
         <TextField id="outlined-basic" sx={{width: '100%'}} id='ownerOfTokenId' label="tokenId" variant="outlined" />
       </div>
       <div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getOwnerOf}> Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={OwnerOf}> Call </Button>
       </div>
     </div>
   <div>
     <h3>Symbol</h3>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getSymbol}> Call </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Symbol}> Call </Button>
     </div>
   </div>
   <div>
@@ -545,7 +544,7 @@ function NFT() {
     <TextField id="outlined-basic" sx={{width: '100%'}} id='tokenUriId' label="_id" variant="outlined" />
     </div>
     <div>
-    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={getTokenURI}> Call </Button>
+    <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={TokenURI}> Call </Button>
     </div>
   </div>
     </TabPanel>
