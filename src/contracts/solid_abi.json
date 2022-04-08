@@ -60,7 +60,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_buyerAddress",
+				"name": "_projectOwnerAddress",
 				"type": "address"
 			},
 			{
@@ -102,7 +102,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_buyerAddress",
+				"name": "_projectOwnerAddress",
 				"type": "address"
 			},
 			{
@@ -125,6 +125,19 @@
 			}
 		],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "currentTokenID",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -154,7 +167,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_buyerAddress",
+				"name": "_projectOwnerAddress",
 				"type": "address"
 			},
 			{
@@ -239,7 +252,7 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_buyerAddress",
+				"name": "_projectOwnerAddress",
 				"type": "address"
 			},
 			{
@@ -272,7 +285,7 @@
 			},
 			{
 				"internalType": "address",
-				"name": "_buyerAddress",
+				"name": "_projectOwnerAddress",
 				"type": "address"
 			},
 			{
