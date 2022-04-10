@@ -393,7 +393,7 @@ function NFT() {
   }
 
 
-  const contractAddress = '0xeB9b010Ef35288378d8FF5da8ba84ec1183cC194'
+  const contractAddress = '0xea55D823C226977F684b41D5fd7A254867a23202'
 
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)

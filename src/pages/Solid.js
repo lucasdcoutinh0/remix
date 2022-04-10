@@ -195,7 +195,7 @@ const Solid = () => {
   // Tabs End //
 
 
-  const contractAddress = '0x6Cd36215a78181Dc015D732aF9fBAF4cdd4BB74a'
+  const contractAddress = '0xFb6021aBAe1643641666a267BcB82a5F8a4d89af'
 
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)
@@ -374,7 +374,7 @@ const Solid = () => {
     e.preventDefault()
     try{
       const updateAccess = document.getElementById('updateAccess').value
-      const update = await contract.getupdateAccess(updateAccess)
+      const update = await contract.updateAccessControls(updateAccess)
     alert('Updatiing Access... please wait 2 blocks to complete the transaction')
       setUpdateMsg("Updated on hash: " + update.hash)
     }

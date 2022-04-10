@@ -199,7 +199,7 @@ const CarbonCredit = () => {
   // Tabs End //
 
 
-  const contractAddress = '0xDE1dcB42C3a490590Af35477C00fbC0d5a4A5e5f'
+  const contractAddress = '0xdea090175f711052FFCD281Bc55fF1D327919eCb'
 
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)
@@ -223,7 +223,7 @@ const CarbonCredit = () => {
     updateContract()
   }
 
-  async function Balance(e) {
+  async function balance(e) {
     e.preventDefault()
     try{
       const balanceAddress = document.getElementById('balanceAddress').value;
@@ -235,7 +235,7 @@ const CarbonCredit = () => {
       console.log(err)
     }
   }
-  async function Approved(e){
+  async function approved(e){
     e.preventDefault()
     try{
       const approvedAccount = document.getElementById('approvedAccount').value;
@@ -247,7 +247,7 @@ const CarbonCredit = () => {
       console.log(err)
     }
   }
-  async function Owner(e){
+  async function owner(e){
     e.preventDefault()
     try{
       alert("Owner: " + await contract.owner())
@@ -259,7 +259,7 @@ const CarbonCredit = () => {
 
   const [burnMsg, setBurnMsg] = useState(null)
 
-  async function Burn(e){
+  async function burn(e){
     e.preventDefault()
     try{
       const burnAccount = document.getElementById('burnAccount').value;;
@@ -276,17 +276,16 @@ const CarbonCredit = () => {
 
   const [stfMsg, setStfMsg] = useState(null)
 
-  async function Stf(e){
+  async function stf(e){
     e.preventDefault()
     try{
-      const stfFrom = document.getElementById('StfFrom').value
-      const stfTo = document.getElementById('StfTo').value
-      const stfId = parseInt(document.getElementById('stfIds')).value
-      const stfAmount = parseInt(document.getElementById('stfAmounts')).value
+      const stfFrom = document.getElementById('stfFrom').value
+      const stfTo = document.getElementById('stfTo').value
+      const stfId = parseInt(document.getElementById('stfIds').value)
+      const stfAmount = parseInt(document.getElementById('stfAmounts').value)
       const stf = await contract.safeTransferFrom(stfFrom, stfTo, stfId, stfAmount, [])
       alert("Safe transfering... please wait 2 blocks to complete the transaction")
       setStfMsg('Safe transfered on hash: ' + stf.hash)
-
     }
     catch(err){
       console.log(err)
@@ -295,7 +294,7 @@ const CarbonCredit = () => {
 
   const [safMsg, setSafMsg] = useState(null)
 
-  async function Saf(e){
+  async function saf(e){
     e.preventDefault()
       try{
         const safOperator = document.getElementById('safOperator').value
@@ -340,18 +339,18 @@ const CarbonCredit = () => {
             <TextField id="outlined-basic" sx={{width: '50%'}} id='balanceId' label="uint256" variant="outlined" />
           </div>
           <div>
-            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Balance} > Call </Button>
+            <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={balance} > Call </Button>
           </div>
           <h3> Is Approved For All </h3> 
           <div>
           <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedAccount' label="address" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '50%'}} id='approvedOperator' label="address" variant="outlined" />
           </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Approved} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={approved} > Call </Button>
         </div>
         <div>
           <h3>Owner</h3>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Owner} > Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={owner} > Call </Button>
         </div>
         <div>
           <h3>Uri</h3>
@@ -368,11 +367,11 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='burnId' label="id" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '100%'}} id='burnAmount' label="_amount" variant="outlined" />
         </div>
+        <div>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={burn}> Call </Button>
+        </div>
         <div className="msg">
           {burnMsg}
-        </div>
-        <div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Burn}> Call </Button>
         </div>
         <h3>Safe Transfer From</h3>
         <div>
@@ -381,7 +380,7 @@ const CarbonCredit = () => {
           <TextField id="outlined-basic" sx={{width: '50%'}} id='stfIds' label="ids" variant="outlined" />
           <TextField id="outlined-basic" sx={{width: '50%'}} id='stfAmounts' label="amount" variant="outlined" />
         </div>
-        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Stf} > Call </Button>
+        <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={stf} > Call </Button>
         <div className="msg">
           {stfMsg}
         </div>
@@ -396,7 +395,7 @@ const CarbonCredit = () => {
         </Select>
       </FormControl>
         </div>
-          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={Saf}> Call </Button>
+          <Button variant="contained" sx={{width: '100%', mt: 2}} onClick={saf}> Call </Button>
           <div className="msg">
           {safMsg}
         </div>
