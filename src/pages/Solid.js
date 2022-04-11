@@ -195,7 +195,7 @@ const Solid = () => {
   // Tabs End //
 
 
-  const contractAddress = '0xFb6021aBAe1643641666a267BcB82a5F8a4d89af'
+  const contractAddress = '0x9471eC86C4f8fBbd793E2C9dA53e21a58511C836'
 
   const [signer, setSigner] = useState(null)
   const [contract, setContract] = useState(null)
